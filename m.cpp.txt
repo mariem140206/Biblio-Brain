@@ -1,0 +1,12 @@
+# include <<iostream>>
+using namespace std;
+int main (){
+int n;
+cout <<"Enter your mo : ";
+cin >>n;
+int x,y;
+cout << "x = "<<"  "<<"y = ";
+cin >>x>>y;
+	cout << "Hello World!";
+	return 0;
+}
