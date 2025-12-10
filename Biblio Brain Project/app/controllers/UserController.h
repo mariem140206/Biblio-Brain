@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #pragma once
 #include <string>
 #include "User.h"
@@ -13,3 +14,13 @@ public:
     crow::response updateRole(const crow::request& req, int id);
     crow::response destroy(const crow::request& req, int id);
 };
+=======
+//
+// Created by dell on 12/10/2025.
+//
+
+#ifndef BIBLIO_BRAIN_PROJECT_USERCONTROLLER_H
+#define BIBLIO_BRAIN_PROJECT_USERCONTROLLER_H
+
+#endif //BIBLIO_BRAIN_PROJECT_USERCONTROLLER_H
+>>>>>>> 50a7dcf (Add UserController files)
