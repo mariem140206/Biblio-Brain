@@ -19,7 +19,6 @@ json Book::toJson() const {
         {"imagePath", imagePath}
     };
 }
-
 Book Book::fromJson(const json &j) {
     Book b;
     b.id = j.value("id", -1);

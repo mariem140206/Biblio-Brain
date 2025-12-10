@@ -3,10 +3,8 @@
 #include <vector>
 #include <algorithm>
 #include "../../core/BaseModel.hpp"
-
 using namespace std;
 using nlohmann::json;
-
 struct Book {
     int id;
     string title;
