@@ -11,7 +11,7 @@ struct User {
     string phoneNumber;
     string dateOfBirth;
 
-    User() : id(-1), name(""), email(""), password(""), role("client"), phoneNumber(""), dateOfBirth("") {}
+    User() : id(-1), name(""), email(""), password(""), role("user"), phoneNumber(""), dateOfBirth("") {}
  
     static User fromJson(const json &j) {
         User u;
@@ -47,10 +47,10 @@ class UserModel : public BaseModel<User> {
     UserModel() : BaseModel("storage/users.json") {}
 
  
-    void create(const User &user) {
+    void create( User &user) {
+        user.id = generateId();
         json data = getAllJson();
         data.push_back(user.toJson());
-        data.back()["id"] = generateId(); 
         saveJson(data);
     }
 

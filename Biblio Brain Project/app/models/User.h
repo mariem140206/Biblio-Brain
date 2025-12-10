@@ -2,17 +2,19 @@
 #include <string>
 #include "../../core/BaseModel.hpp"
 #include "json.hpp" 
-
+using namespace std;
 using json = nlohmann::json;
 
 struct User {
  int id;
- std::string name;
- std::string email;
- std::string password;
- std::string role; // admin, librarian, user
+ string name;
+ string email;
+ string password;
+ string role; // admin, librarian, user
+ string phoneNumber;
+ string dateOfBirth;
 
- User() : id(-1), name(""), email(""), password(""), role("user") {}
+ User() : id(-1), name(""), email(""), password(""), role("user"), phoneNumber(""), dateOfBirth("") {}
 
  static User fromJson(const json& j);
  json toJson() const;
@@ -22,6 +24,6 @@ struct User {
 class UserModel : public BaseModel<User> {
 public:
  UserModel();
- void create(const User& user);
- User findByEmail(const std::string& email);
+ void create( User& user);
+ User findByEmail(const string& email);
 }; 
