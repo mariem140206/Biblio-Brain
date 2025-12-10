@@ -1,9 +1,8 @@
-#include "Borrow.hpp"
-#include <iostream> // (اختياري في حالة استخدام cout)
+#include "Borrow.h"
+#include <iostream> 
 
 using namespace std;
 
-// ====== Borrow Struct Implementation ======
 
 Borrow::Borrow() 
     : id(-1), userId(-1), bookId(-1),
@@ -38,7 +37,6 @@ bool Borrow::isValid() const {
     return id != -1; 
 }
 
-// ====== BorrowModel Implementation ======
 
 BorrowModel::BorrowModel() 
     : BaseModel("storage/borrows.json") {}
