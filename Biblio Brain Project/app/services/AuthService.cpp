@@ -2,7 +2,6 @@
 #include <random>
 #include <sstream>
 #include <iomanip>
-#include <openssl/sha.h>
 #include "../models/User.h" 
 using namespace std;
 
@@ -88,10 +87,12 @@ User AuthService::authenticate(const string& token) {
 }
 
 
-void AuthService::logout(const string& token) {
-    if(sessions_by_refresh.count(token)){
-        string accessToken = sessions_by_refresh.at(token).accessToken;
-        sessions_by_refresh.erase(token);
+void AuthService::logout(const string& accessToken) {
+    if(access_to_refresh_map.count(accessToken)){
+        string refreshToken = access_to_refresh_map.at(accessToken);
+      if(sessions_by_refresh.count(refreshToken)){
+        sessions_by_refresh.erase(refreshToken);
+      }
         access_to_refresh_map.erase(accessToken);
     }
 }

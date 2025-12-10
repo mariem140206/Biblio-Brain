@@ -39,7 +39,7 @@ class AuthService {
 public:
     static LoginResponse login(const string& email, const string& password);
     static User authenticate(const string& token);
-    static void logout(const string& token);
+    static void logout(const string& accessToken);
     static bool isAdmin(const User& user);
     static bool isLibrarian(const User& user);
     static string refresh(const string& refreshToken);

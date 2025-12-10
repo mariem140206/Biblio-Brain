@@ -11,7 +11,7 @@ struct User {
     string phoneNumber;
     string dateOfBirth;
 
-    User() : id(-1), name(""), email(""), password(""), role("client"), phoneNumber(""), dateOfBirth("") {}
+    User() : id(-1), name(""), email(""), password(""), role("user"), phoneNumber(""), dateOfBirth("") {}
  
     static User fromJson(const json &j) {
         User u;
@@ -41,15 +41,16 @@ struct User {
     bool isValid() const { return id != -1 && !email.empty(); }
 };
 
+
 class UserModel : public BaseModel<User> {
   public : 
     UserModel() : BaseModel("storage/users.json") {}
 
  
-    void create(const User &user) {
+    void create( User &user) {
+        user.id = generateId();
         json data = getAllJson();
         data.push_back(user.toJson());
-        data.back()["id"] = generateId(); 
         saveJson(data);
     }
 
@@ -68,13 +69,14 @@ class UserModel : public BaseModel<User> {
         return results;
     }
 
-    int login(const string &email, const string &password) {
-        for(auto &user : all()) {
-            if(user.email == email && user.password == password) {
-                return user.id;
+
+   User findByEmail(const string& email){
+        for (const auto& user : all()){
+            if (user.email == email){
+                return user;
             }
         }
-        return -1; 
+        return User();
     }
 
     User getUserById(int id) {
