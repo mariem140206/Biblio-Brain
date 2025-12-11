@@ -1,5 +1,6 @@
 #include "AuthService.h"
 #include <random>
+#include "Path/To/PasswordHasher.h"
 #include <sstream>
 #include <iomanip>
 #include "../models/User.h" 

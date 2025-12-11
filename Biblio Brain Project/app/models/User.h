@@ -18,7 +18,7 @@ struct User {
 
  static User fromJson(const json& j);
  json toJson() const;
- bool isValid() const { return id != -1; }
+ bool isValid() const { return id != -1; && !email.empty(); }
 };
 
 class UserModel : public BaseModel<User> {
@@ -26,4 +26,5 @@ public:
  UserModel();
  void create( User& user);
  User findByEmail(const string& email);
+ User getUserById(int id);
 }; 

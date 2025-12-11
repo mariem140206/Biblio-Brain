@@ -2,6 +2,7 @@
 #include "crow.h"
 #include <string>
 using namespace std;
+
 class Response {
 public:
     static crow::response json(const crow::json::wvalue& data, int code = 200) {
@@ -12,8 +13,7 @@ public:
         return res;
     }
 
-    static crow::response success(const string& message,
-                                  const crow::json::wvalue& data)
+    static crow::response success(const string& message, const crow::json::wvalue& data)
     {
         crow::json::wvalue res;
         res["success"] = true;

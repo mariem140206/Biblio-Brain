@@ -36,6 +36,9 @@ crow::response AuthController::registerUser(const crow::request& req) {
     if (!body) {
         return Response::error("Invalid JSON", 400);
     }
+    if (!body.count("name") || !body.count("email") || !body.count("password")) {
+     return Response::error("Missing required fields: name, email, or password", 400);
+    }
 
     User user;
     user.name = body["name"].s();
@@ -56,13 +59,23 @@ crow::response AuthController::registerUser(const crow::request& req) {
 
 crow::response AuthController::logout(const crow::request& req) {
     string token = req.get_header_value("Authorization");
+    string token = extractToken(header);
     AuthService::logout(token);
     return Response::success("Logged out successfully");
+}
 
+namespace{
+    string extractToken(const string& header){
+        if(header.size() > 7 && header.substr(0, 7) == "Bearer "){
+            return header.substr(7);
+        }
+        return header;
+    }
 }
 
 crow::response AuthController::me(const crow::request& req) {
     string token = req.get_header_value("Authorization");
+    string token = extractToken(header);
     User user = AuthService::authenticate(token);
 
     if (!user.isValid()) {
