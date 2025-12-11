@@ -1,4 +1,73 @@
+ #include "crow.h"
+
+// Controllers
+#include "app/controllers/AuthController.h"
+#include "app/controllers/BookController.h"
+#include "app/controllers/BorrowController.h"
+#include "app/controllers/UserController.h"
+
+#include <fstream>
+#include <sstream>
+#include <map>
+
+int main()
+{
+    crow::App<> app;
+
     /* ============================================
+       Serve Static Files Under  /assets/<path>
+       ============================================ */
+    CROW_ROUTE(app, "/assets/<path>")
+    ([](std::string path) {
+        std::string fullPath = "../public/" + path;
+        std::ifstream file(fullPath, std::ios::binary);
+
+        if (!file.is_open())
+            return crow::response(404);
+
+        // Read file
+        std::ostringstream buffer;
+        buffer << file.rdbuf();
+        std::string content = buffer.str();
+        crow::response res(content);
+
+        // MIME types
+        static std::map<std::string, std::string> mimeTypes = {
+            {".css", "text/css"}, {".js", "application/javascript"},
+            {".png", "image/png"}, {".jpg", "image/jpeg"},
+            {".jpeg", "image/jpeg"}, {".gif", "image/gif"},
+            {".svg", "image/svg+xml"}, {".woff", "font/woff"},
+            {".woff2", "font/woff2"}, {".ttf", "font/ttf"},
+            {".ico", "image/x-icon"}
+        };
+
+        // Detect content type
+        for (auto &m : mimeTypes) {
+            const auto &ext = m.first;
+            const auto &type = m.second;
+
+            if (path.size() >= ext.size() &&
+                path.compare(path.size() - ext.size(), ext.size(), ext) == 0)
+            {
+                res.set_header("Content-Type", type);
+                break;
+            }
+        }
+
+        return res;
+    });
+
+    /* ============================================
+       Serve Index Page
+       ============================================ */
+    CROW_ROUTE(app, "/")
+    ([]() {
+        crow::mustache::set_base("../public");
+        auto page = crow::mustache::load("index.html");
+        return page.render();
+    }); 
+  
+  /* ============================================
        Auth Routes
        ============================================ */
     CROW_ROUTE(app, "/api/auth/login").methods("POST"_method)
