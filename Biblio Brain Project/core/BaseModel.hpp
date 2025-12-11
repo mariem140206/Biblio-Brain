@@ -3,7 +3,7 @@
 #include <string>
 #include <algorithm>
 #include "../utils/json.hpp"
-#include "../app/models/JsonStorage.cpp"
+#include "../app/models/JsonStorage.h"
 using namespace std;
 using json = nlohmann::json;
 
@@ -78,7 +78,7 @@ class BaseModel {
     }
 
 
-    bool update(int id, const json &upates){
+    bool update(int id, const json &updates){
         json data = getAllJson();
         for(auto &item : data){
             if(item.contains("id") && item["id"].is_number() && item["id"].get<int>() == id){
