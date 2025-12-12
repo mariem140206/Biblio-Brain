@@ -1,34 +1,31 @@
 #include "AuthController.h"
 #include <string>
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-string extractToken(const string& headerValue) {
-    const string prefix = "Bearer ";
-    if (headerValue.rfind(prefix, 0) == 0) {
-        return headerValue.substr(prefix.size());
-    }
-    return ""; 
-}
-
-crow::response AuthController::login(const crow::request& req) {
+crow::response AuthController::login(const crow::request &req)
+{
     auto body = crow::json::load(req.body);
-    if (!body) {
+    if (!body)
+    {
         return Response::error("Invalid JSON", 400);
     }
-    if(!body.count("email")){
+    if (!body.count("email"))
+    {
         return Response::error("Missing email", 400);
     }
-    if(!body.count("password")){
+    if (!body.count("password"))
+    {
         return Response::error("Missing password", 400);
     }
 
     string email = body["email"].s();
-   string password = body["password"].s();
+    string password = body["password"].s();
 
     LoginResponse response = AuthService::login(email, password);
 
-    if (response.accessToken.empty()) {
+    if (response.accessToken.empty())
+    {
         return Response::error("Invalid credentials", 401);
     }
 
@@ -39,13 +36,16 @@ crow::response AuthController::login(const crow::request& req) {
     return Response::success("Login successful", data);
 }
 
-crow::response AuthController::registerUser(const crow::request& req) {
+crow::response AuthController::registerUser(const crow::request &req)
+{
     auto body = crow::json::load(req.body);
-    if (!body) {
+    if (!body)
+    {
         return Response::error("Invalid JSON", 400);
     }
-    if (!body.count("name") || !body.count("email") || !body.count("password")) {
-     return Response::error("Missing required fields: name, email, or password", 400);
+    if (!body.count("name") || !body.count("email") || !body.count("password"))
+    {
+        return Response::error("Missing required fields: name, email, or password", 400);
     }
 
     User user;
@@ -56,7 +56,8 @@ crow::response AuthController::registerUser(const crow::request& req) {
 
     UserModel model;
 
-    if (model.findByEmail(user.email).isValid()) {
+    if (model.findByEmail(user.email).isValid())
+    {
         return Response::error("Email already exists", 400);
     }
 
@@ -65,20 +66,20 @@ crow::response AuthController::registerUser(const crow::request& req) {
     return Response::success("Registration successful");
 }
 
-crow::response AuthController::logout(const crow::request& req) {
+crow::response AuthController::logout(const crow::request &req)
+{
     string token = req.get_header_value("Authorization");
-    token = extractToken(token);
     AuthService::logout(token);
     return Response::success("Logged out successfully");
 }
 
-
-crow::response AuthController::me(const crow::request& req) {
+crow::response AuthController::me(const crow::request &req)
+{
     string token = req.get_header_value("Authorization");
-    token = extractToken(token);
     User user = AuthService::authenticate(token);
 
-    if (!user.isValid()) {
+    if (!user.isValid())
+    {
         return Response::unauthorized();
     }
 
@@ -87,17 +88,23 @@ crow::response AuthController::me(const crow::request& req) {
     data["name"] = user.name;
     data["email"] = user.email;
     data["role"] = user.role;
+    data["phoneNumber"] = user.phoneNumber;
+    data["dateOfBirth"] = user.dateOfBirth;
 
     return Response::success("User found", data);
 }
-crow::response AuthController::refresh(const crow::request& req) {
+
+crow::response AuthController::refresh(const crow::request &req)
+{
     auto body = crow::json::load(req.body);
-    if (!body || !body.count("refreshToken")){
+    if (!body || !body.count("refreshToken"))
+    {
         return Response::error("Missing refresh token in body", 400);
     }
     string refreshToken = body["refreshToken"].s();
     string newAccessToken = AuthService::refresh(refreshToken);
-    if(newAccessToken.empty()){
+    if (newAccessToken.empty())
+    {
         return Response::unauthorized(); // 401 Unauthorized
     }
     crow::json::wvalue data;

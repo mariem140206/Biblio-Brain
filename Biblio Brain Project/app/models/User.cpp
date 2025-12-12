@@ -4,7 +4,7 @@
 #include <algorithm>
 
  
-    static User fromJson(const json &j) {
+    User User::fromJson(const json &j) {
         User u;
         if(j.contains("id")) u.id = j["id"].get<int>();
         if(j.contains("name")) u.name = j["name"].get<string>();
@@ -28,6 +28,7 @@
         };
     }
 
+    UserModel::UserModel():BaseModel("storage/users.json"){}
     
     void UserModel::create( User &user) {
         user.id = this->generateId();

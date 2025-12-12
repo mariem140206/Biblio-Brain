@@ -6,9 +6,8 @@
 #include <string>
 using namespace std;
 
-string extractToken(const string& headerValue) ;
 class AuthController {
-public:
+    public:
     static crow::response login(const crow::request& req);
     static crow::response registerUser(const crow::request& req);
     static crow::response logout(const crow::request& req);

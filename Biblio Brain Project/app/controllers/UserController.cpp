@@ -1,18 +1,8 @@
 #include "UserController.h"
 
 
-string extractToken(const string& headerValue) {
-    const string prefix = "Bearer ";
-    if (headerValue.rfind(prefix, 0) == 0) {
-        return headerValue.substr(prefix.size());
-    }
-    return ""; 
-}
-
-
 crow::response UserController::index(const crow::request& req) {
     string token = req.get_header_value("Authorization");
-    token = extractToken(token);
     User user = AuthService::authenticate(token);
     if (!user.isValid()) return Response::unauthorized();
     if (!AuthService::isAdmin(user)) return Response::forbidden("Only admins can view all users");
@@ -38,7 +28,6 @@ crow::response UserController::index(const crow::request& req) {
 
 crow::response UserController::updateRole(const crow::request& req, int id) {
     string token = req.get_header_value("Authorization");
-    token = extractToken(token);
     User user = AuthService::authenticate(token);
     if (!user.isValid()) return Response::unauthorized();
     if (!AuthService::isAdmin(user)) return Response::forbidden("Only admins can update user roles");
@@ -63,7 +52,6 @@ crow::response UserController::updateRole(const crow::request& req, int id) {
 
 crow::response UserController::destroy(const crow::request& req, int id) {
     string token = req.get_header_value("Authorization");
-    token = extractToken(token);
     User user = AuthService::authenticate(token);
     if (!user.isValid()) return Response::unauthorized();
     if (!AuthService::isAdmin(user)) return Response::forbidden("Only admins can delete users");
