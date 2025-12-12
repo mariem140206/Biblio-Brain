@@ -18,8 +18,8 @@ public:
         crow::json::wvalue res;
         res["success"] = true;
         res["message"] = message;
-        res["data"] = data;   // ← مفيش const_cast ولا move
-        return json(res);
+        res["data"] = data.dump();   
+        return res;
     }
 
     static crow::response success(const string& message) {

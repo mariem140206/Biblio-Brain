@@ -2,7 +2,11 @@
 #include <string>
 #include "../../core/BaseModel.hpp"
 #include "json.hpp" 
+
+using std::string;
+using std::vector;
 using namespace std;
+
 using json = nlohmann::json;
 
 struct User {
@@ -18,7 +22,7 @@ struct User {
 
  static User fromJson(const json& j);
  json toJson() const;
- bool isValid() const { return id != -1; && !email.empty(); }
+ bool isValid() const { return id != -1 && !email.empty(); }
 };
 
 class UserModel : public BaseModel<User> {
@@ -27,4 +31,7 @@ public:
  void create( User& user);
  User findByEmail(const string& email);
  User getUserById(int id);
+ vector<User> search(const string& query);
+ private:
+ string toLower(string s);
 }; 

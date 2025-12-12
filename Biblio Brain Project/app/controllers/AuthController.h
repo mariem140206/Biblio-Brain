@@ -3,7 +3,10 @@
 #include "../../core/Response.hpp"
 #include "../models/User.h"
 #include "../services/AuthService.h"
+#include <string>
+using namespace std;
 
+string extractToken(const string& headerValue) ;
 class AuthController {
 public:
     static crow::response login(const crow::request& req);

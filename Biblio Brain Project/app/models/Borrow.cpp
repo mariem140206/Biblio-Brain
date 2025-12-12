@@ -1,13 +1,9 @@
 #include "Borrow.h"
-#include <iostream> 
-
-using namespace std;
-
 
 Borrow::Borrow() 
     : id(-1), userId(-1), bookId(-1),
       borrowDate(""), dueDate(""), returnDate(""),
-      status("active") {}
+      status("active"), returned(false), duration(15) {}
 
 Borrow Borrow::fromJson(const json &j) {
     Borrow b;
@@ -18,6 +14,8 @@ Borrow Borrow::fromJson(const json &j) {
     if(j.contains("due_date")) b.dueDate = j["due_date"].get<string>();
     if(j.contains("return_date")) b.returnDate = j["return_date"].get<string>();
     if(j.contains("status")) b.status = j["status"].get<string>();
+    if(j.contains("status")) b.returned = j["returned"].get<bool>();
+    if(j.contains("status")) b.duration = j["duration"].get<int>();
     return b;
 }
 
@@ -29,7 +27,9 @@ json Borrow::toJson() const {
         {"borrow_date", borrowDate},
         {"due_date", dueDate},
         {"return_date", returnDate},
-        {"status", status}
+        {"status", status},
+        {"returned", returned},
+        {"duration", duration}
     };
 }
 
@@ -56,6 +56,7 @@ bool BorrowModel::returnBook(int borrowId, string actualReturnDate) {
         if (item["id"] == borrowId) {
             item["status"] = "returned";
             item["return_date"] = actualReturnDate;
+            item["returned"] = true;
             found = true;
             break;
         }
@@ -68,6 +69,36 @@ bool BorrowModel::returnBook(int borrowId, string actualReturnDate) {
     return false;
 }
 
+
+
+vector<Borrow> BorrowModel::findByUserId(int userId) {
+    vector<Borrow> results;
+    for (auto &b : all()) {
+        if (b.userId == userId)
+            results.push_back(b);
+    }
+    return results;
+}
+
+
+vector<Borrow> BorrowModel::findPending() {
+    vector<Borrow> results;
+    for (auto &b : all()) {
+        if (!b.returned) results.push_back(b);
+    }
+    return results;
+}
+
+
+bool BorrowModel::hasActiveBorrow(int userId, int bookId) {
+    for (auto &b : all()) {
+        if (b.userId == userId && b.bookId == bookId && !b.returned)
+            return true;
+    }
+    return false;
+}
+
+
 vector<Borrow> BorrowModel::getBorrowsByUserId(int userId) {
     vector<Borrow> userHistory;
     for(auto &b : all()) {
@@ -78,10 +109,12 @@ vector<Borrow> BorrowModel::getBorrowsByUserId(int userId) {
     return userHistory;
 }
 
-vector<Borrow> BorrowModel::getActiveBorrows() {
+
+
+vector<Borrow> BorrowModel::getActiveBorrows(int userId) {
     vector<Borrow> activeList;
     for(auto &b : all()) {
-        if(b.status == "active") {
+        if(b.userId == userId && b.status == "active") {
             activeList.push_back(b);
         }
     }

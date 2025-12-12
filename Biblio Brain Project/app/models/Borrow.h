@@ -4,6 +4,7 @@
 #include <vector>
 
 using namespace std;
+using nlohmann::json;
 
 struct Borrow {
     int id;
@@ -13,11 +14,12 @@ struct Borrow {
     string dueDate;
     string returnDate;
     string status;
+    bool returned = false;
+    int duration = 15;
 
     Borrow();
-
-    static Borrow fromJson(const json &j);
     json toJson() const;
+    static Borrow fromJson(const json &j);
     bool isValid() const;
 };
 
@@ -27,6 +29,9 @@ public:
 
     void create(const Borrow &borrow);
     bool returnBook(int borrowId, string actualReturnDate);
+    vector<Borrow> findByUserId(int userId);
+    vector<Borrow> findPending();
+    bool hasActiveBorrow(int userId, int bookId);
     vector<Borrow> getBorrowsByUserId(int userId);
-    vector<Borrow> getActiveBorrows();
+    vector<Borrow> getActiveBorrows(int userId);
 };

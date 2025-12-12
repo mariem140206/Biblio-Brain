@@ -1,7 +1,22 @@
 #include "BorrowController.h"
+#include "../models/Borrow.h"
+#include "../services/AuthService.h"
+#include "../services/DateService.h"
+#include "../../core/Response.hpp"
+using namespace std;
+
+
+User BorrowController::getAuthenticatedUser(const crow::request& req) {
+    string token = req.get_header_value("Authorization");
+    if (token.size() > 7 && token.substr(0, 7) == "Bearer ")
+        token = token.substr(7);
+
+    return AuthService::authenticate(token);
+}
+
 
 crow::response BorrowController::requestBorrow(const crow::request& req) {
-    std::string token = req.get_header_value("Authorization");
+    string token = req.get_header_value("Authorization");
     User user = AuthService::authenticate(token);
     if (!user.isValid()) return Response::unauthorized();
 

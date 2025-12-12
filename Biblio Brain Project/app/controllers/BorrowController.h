@@ -9,6 +9,7 @@
 
 class BorrowController {
 public:
+    static User getAuthenticatedUser(const crow::request& req);
     static crow::response requestBorrow(const crow::request& req);
     static crow::response processBorrowRequest(const crow::request& req, int id);
     static crow::response returnBook(const crow::request& req, int id);
