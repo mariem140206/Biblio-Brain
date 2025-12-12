@@ -3,6 +3,14 @@
 #include<iostream>
 using namespace std;
 
+string extractToken(const string& headerValue) {
+    const string prefix = "Bearer ";
+    if (headerValue.rfind(prefix, 0) == 0) {
+        return headerValue.substr(prefix.size());
+    }
+    return ""; 
+}
+
 crow::response AuthController::login(const crow::request& req) {
     auto body = crow::json::load(req.body);
     if (!body) {
@@ -59,23 +67,15 @@ crow::response AuthController::registerUser(const crow::request& req) {
 
 crow::response AuthController::logout(const crow::request& req) {
     string token = req.get_header_value("Authorization");
-    string token = extractToken(header);
+    token = extractToken(token);
     AuthService::logout(token);
     return Response::success("Logged out successfully");
 }
 
-namespace{
-    string extractToken(const string& header){
-        if(header.size() > 7 && header.substr(0, 7) == "Bearer "){
-            return header.substr(7);
-        }
-        return header;
-    }
-}
 
 crow::response AuthController::me(const crow::request& req) {
     string token = req.get_header_value("Authorization");
-    string token = extractToken(header);
+    token = extractToken(token);
     User user = AuthService::authenticate(token);
 
     if (!user.isValid()) {

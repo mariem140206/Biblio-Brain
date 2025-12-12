@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "PasswordHasher.h"
 #include "../models/User.h"
 #include <unordered_map>
 #include <ctime>
@@ -19,13 +20,6 @@ struct Session {
     string refreshToken;
     time_t accessExpiresAt;
     time_t refreshExpiresAt;
-};
-
-
-class PasswordHasher {
-public:
-    static string hash(const string& password);
-    static bool verify(const string& password, const string& hash);
 };
 
 

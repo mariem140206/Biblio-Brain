@@ -1,17 +1,8 @@
-#pragma once
 #include "../../core/BaseModel.hpp"
+#include "User.h"
 #include <string>
 #include <algorithm>
-struct User {
-    int id;
-    string name;
-    string email;
-    string password;
-    string role;          
-    string phoneNumber;
-    string dateOfBirth;
 
-    User() : id(-1), name(""), email(""), password(""), role("user"), phoneNumber(""), dateOfBirth("") {}
  
     static User fromJson(const json &j) {
         User u;
@@ -25,7 +16,7 @@ struct User {
         return u;
     }
 
-    json toJson() const {
+    json User::toJson() const {
         return {
             {"id", id},
             {"name", name},
@@ -37,24 +28,15 @@ struct User {
         };
     }
 
-
-    bool isValid() const { return id != -1 && !email.empty(); }
-};
-
-
-class UserModel : public BaseModel<User> {
-  public : 
-    UserModel() : BaseModel("storage/users.json") {}
-
- 
-    void create( User &user) {
-        user.id = generateId();
-        json data = getAllJson();
+    
+    void UserModel::create( User &user) {
+        user.id = this->generateId();
+        json data = this->getAllJson();
         data.push_back(user.toJson());
-        saveJson(data);
+        this->saveJson(data);
     }
 
-    vector<User> search(const string &query) {
+    vector<User> UserModel::search(const string &query) {
         vector<User> results;
         string lowerQuery = toLower(query);
 
@@ -70,7 +52,7 @@ class UserModel : public BaseModel<User> {
     }
 
 
-   User findByEmail(const string& email){
+   User UserModel::findByEmail(const string& email){
         for (const auto& user : all()){
             if (user.email == email){
                 return user;
@@ -79,17 +61,15 @@ class UserModel : public BaseModel<User> {
         return User();
     }
 
-    User getUserById(int id) {
-        for(auto &user : all()) {
+    User UserModel::getUserById(int id) {
+        for(auto &user : this->all()) {
             if(user.id == id) return user;
         }
         return User(); 
     }
 
-private:
     
-    string toLower(string s) {
-        transform(s.begin(), s.end(), s.begin(), ::tolower);
+    string UserModel::toLower(string s) {
+        transform(s.begin(), s.end(), s.begin(), [](unsigned char c){ return tolower(c); });
         return s;
     }
-};

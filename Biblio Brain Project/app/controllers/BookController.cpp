@@ -1,5 +1,18 @@
 #include "BookController.h"
+#include <utility>
 using namespace std;
+
+crow::json::wvalue toCrowJson(const Book& b) {
+    crow::json::wvalue json;
+    json["id"] = b.id;
+    json["title"] = b.title;
+    json["author"] = b.author;
+    json["category"] = b.category;
+    json["year"] = b.year;
+    json["imagePath"] = b.imagePath;
+    return json;
+}
+
 User BookController::getAuthenticatedUser(const crow::request& req) {
     string token = req.get_header_value("Authorization");
     if (token.rfind("Bearer ", 0) == 0)
@@ -13,12 +26,11 @@ crow::response BookController::index(const crow::request& req) {
     auto books = model.all();
 
     crow::json::wvalue::list bookList;
-    for (auto& b : books) {
-        bookList.push_back(b.toJson());
-    }
+    for (auto& b : books)
+        bookList.push_back(toCrowJson(b));
 
     crow::json::wvalue data;
-    data["books"] =  move(bookList);
+    data["books"] = std::move(bookList);
 
     return Response::success("Books retrieved", data);
 }
@@ -26,11 +38,10 @@ crow::response BookController::index(const crow::request& req) {
 crow::response BookController::show(const crow::request& req, int id) {
     BookModel model;
     Book book = model.findById(id);
-
     if (!book.isValid())
         return Response::error("Book not found", 404);
 
-    return Response::success("Book found", book.toJson());
+    return Response::success("Book found", toCrowJson(book));
 }
 
 crow::response BookController::search(const crow::request& req) {
@@ -43,20 +54,18 @@ crow::response BookController::search(const crow::request& req) {
 
     crow::json::wvalue::list list;
     for (auto& book : results)
-        list.push_back(book.toJson());
+        list.push_back(toCrowJson(book));
 
     crow::json::wvalue data;
-    data["results"] =  move(list);
+    data["results"] = std::move(list);
 
     return Response::success("Search completed", data);
 }
 
 crow::response BookController::create(const crow::request& req) {
     User user = getAuthenticatedUser(req);
-
     if (!user.isValid())
         return Response::unauthorized();
-
     if (!AuthService::isLibrarian(user))
         return Response::forbidden("Only librarians can add books");
 
@@ -73,9 +82,7 @@ crow::response BookController::create(const crow::request& req) {
     book.year = body["year"].i();
     book.totalCopies = body["total_copies"].i();
     book.availableCopies = body["available_copies"].i();
-
-
-    book.imagePath = body.has("imagePath") ? body["imagePath"].s() : "";
+    if (body.has("imagePath")) book.imagePath = body["imagePath"].s();
 
     BookModel model;
     model.create(book);
@@ -85,10 +92,8 @@ crow::response BookController::create(const crow::request& req) {
 
 crow::response BookController::update(const crow::request& req, int id) {
     User user = getAuthenticatedUser(req);
-
     if (!user.isValid())
         return Response::unauthorized();
-
     if (!AuthService::isLibrarian(user))
         return Response::forbidden("Only librarians can update books");
 
@@ -109,20 +114,17 @@ crow::response BookController::update(const crow::request& req, int id) {
     if (body.has("year")) book.year = body["year"].i();
     if (body.has("total_copies")) book.totalCopies = body["total_copies"].i();
     if (body.has("available_copies")) book.availableCopies = body["available_copies"].i();
+    if (body.has("imagePath")) book.imagePath = body["imagePath"].s();
 
-    book.imagePath = body.value("imagePath", book.imagePath);
-
-    model.update(id, book);
+    model.update(id, book.toJson()); // <-- هنا
 
     return Response::success("Book updated successfully");
 }
 
 crow::response BookController::destroy(const crow::request& req, int id) {
     User user = getAuthenticatedUser(req);
-
     if (!user.isValid())
         return Response::unauthorized();
-
     if (!AuthService::isAdmin(user))
         return Response::forbidden("Only admins can delete books");
 
@@ -132,3 +134,4 @@ crow::response BookController::destroy(const crow::request& req, int id) {
 
     return Response::error("Book not found", 404);
 }
+

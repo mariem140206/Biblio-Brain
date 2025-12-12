@@ -4,18 +4,18 @@
 >>>>>>> c9808b8 (Add UserController files)
 #pragma once
 #include <string>
-#include "User.h"
-#include "Response.hpp"
-#include "AuthService.h"
+#include "../models/User.h"
+#include "../../core/Response.hpp"
+#include "../services/AuthService.h"
 #include "crow.h"
 
 using namespace std;
-
+string extractToken(const string& headerValue) ;
 class UserController {
 public:
-    crow::response index(const crow::request& req);
-    crow::response updateRole(const crow::request& req, int id);
-    crow::response destroy(const crow::request& req, int id);
+  static crow::response index(const crow::request& req);
+  static  crow::response updateRole(const crow::request& req, int id);
+  static  crow::response destroy(const crow::request& req, int id);
 };
 <<<<<<< HEAD
 =======

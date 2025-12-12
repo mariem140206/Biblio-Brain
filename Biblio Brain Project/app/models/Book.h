@@ -5,6 +5,7 @@
 #include "../../core/BaseModel.hpp"
 using namespace std;
 using nlohmann::json;
+
 struct Book {
     int id;
     string title;
@@ -18,6 +19,7 @@ struct Book {
     string imagePath;
 
     Book();
+    
 
     json toJson() const;
     static Book fromJson(const json &j);

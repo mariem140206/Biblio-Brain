@@ -1,6 +1,6 @@
 #include "AuthService.h"
 #include <random>
-#include "Path/To/PasswordHasher.h"
+#include "PasswordHasher.h"
 #include <sstream>
 #include <iomanip>
 #include "../models/User.h" 
@@ -9,8 +9,6 @@ using namespace std;
 unordered_map<string, Session> AuthService::sessions_by_refresh;
 unordered_map<string, string> AuthService::access_to_refresh_map;
 unordered_map<string, AccountLockState> AuthService::failed_attempts;
- const int AuthService:: MAX_ATTEMPTS = 3;
- const int AuthService:: LOCKOUT_DURATION = 60 * 3;
 
 LoginResponse AuthService::login(const string& email, const string& password) {
     if (isAccountLocked(email)) return{"",""} ;

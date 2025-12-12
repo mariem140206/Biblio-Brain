@@ -3,7 +3,6 @@
 #include <string>
 #include <algorithm>
 #include "../utils/json.hpp"
-#include "../app/models/JsonStorage.h"
 using namespace std;
 using json = nlohmann::json;
 
@@ -14,7 +13,7 @@ class BaseModel {
     json cachedData;
     public:
     BaseModel(const string &path):storagePath(path){
-        cachedData = JsonStorage::readFile(storagePath);
+        cachedData = json::array();
     }
 
 
@@ -26,7 +25,6 @@ class BaseModel {
 
     void saveJson(const json &data){
         cachedData = data;
-        JsonStorage::writeFile(storagePath,data);
     }
 
 
@@ -47,7 +45,7 @@ class BaseModel {
      bool deleteById(int id){
         json data = getAllJson();
         auto it = remove_if(data.begin(),data.end(),[id](const json &item)
-    {return item.contains("id") && item["id"].is_number() && item["id"].get<int>() == id});
+    {return item.contains("id") && item["id"].is_number() && item["id"].get<int>() == id;});
     if(it != data.end()){
         data.erase(it, data.end());
         saveJson(data);

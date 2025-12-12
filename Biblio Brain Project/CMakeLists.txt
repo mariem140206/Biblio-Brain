@@ -36,6 +36,7 @@ set(SOURCES
         app/models/User.cpp
         app/services/AuthService.cpp
         app/services/DateService.cpp
+	app/services/PasswordHasher.cpp
 )
 
 # Executable
@@ -57,4 +58,4 @@ endif()
 
 # Copy resources
 file(COPY public DESTINATION ${CMAKE_BINARY_DIR})
-file(COPY storage DESTINATION ${CMAKE_BINARY_DIR})
+
