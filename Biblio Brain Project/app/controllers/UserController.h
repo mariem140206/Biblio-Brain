@@ -6,7 +6,6 @@
 #include "crow.h"
 
 using namespace std;
-string extractToken(const string& headerValue) ;
 class UserController {
 public:
   static crow::response index(const crow::request& req);
