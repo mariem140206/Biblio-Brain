@@ -6,21 +6,19 @@ using namespace std;
 crow::response AuthController::login(const crow::request &req)
 {
     auto body = crow::json::load(req.body);
-    if (!body)
-    {
-        return Response::error("Invalid JSON", 400);
-    }
-    if (!body.count("email"))
-    {
-        return Response::error("Missing email", 400);
-    }
-    if (!body.count("password"))
-    {
-        return Response::error("Missing password", 400);
-    }
+if (
+    !body.count("email") || 
+    !body.count("password") 
+) {
+
+    return Response::error(
+        "Missing required fields", 400
+    );
+}
 
     string email = body["email"].s();
     string password = body["password"].s();
+
 
     LoginResponse response = AuthService::login(email, password);
 

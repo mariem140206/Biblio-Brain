@@ -1,11 +1,20 @@
 [
-      {
-    "email": "admin@library.com",
-    "id": 1,
-    "name": "Admin User",
-    "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
-    "role": "admin",
-    "phoneNumber": "01268",
-    "dateOfBirth": "14/02/2006"
-  },
+    {
+        "dateOfBirth": "",
+        "email": "new.user@example.com",
+        "id": 1,
+        "name": "Mahmoud Hassan",
+        "password": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5",
+        "phoneNumber": "",
+        "role": "user"
+    },
+    {
+        "dateOfBirth": "",
+        "email": "new.user1@example.com",
+        "id": 2,
+        "name": "Mahmoud ",
+        "password": "5570b8fffb53088e058bb8676e9ff407906055343b2aeb12877b68e971f2bedd",
+        "phoneNumber": "",
+        "role": "user"
+    }
 ]

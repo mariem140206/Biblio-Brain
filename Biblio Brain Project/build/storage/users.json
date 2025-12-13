@@ -1,0 +1,20 @@
+[
+    {
+        "dateOfBirth": "",
+        "email": "new.user@example.com",
+        "id": 1,
+        "name": "Mahmoud Hassan",
+        "password": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5",
+        "phoneNumber": "",
+        "role": "user"
+    },
+    {
+        "dateOfBirth": "",
+        "email": "new.user1@example.com",
+        "id": 2,
+        "name": "Mahmoud ",
+        "password": "5570b8fffb53088e058bb8676e9ff407906055343b2aeb12877b68e971f2bedd",
+        "phoneNumber": "",
+        "role": "user"
+    }
+]
