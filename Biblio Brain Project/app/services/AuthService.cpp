@@ -14,7 +14,7 @@ unordered_map<string, AccountLockState> AuthService::failed_attempts;
 bool AuthService::registerUser(const User& user, std::string& error)
 {
     json users = json::array();
-    std::ifstream in("storage/users.json");
+    std::ifstream in("../storage/users.json");
     if (in.is_open()) {
         in >> users;
         in.close();
@@ -37,7 +37,7 @@ bool AuthService::registerUser(const User& user, std::string& error)
         {"dateOfBirth", user.dateOfBirth}
     };
     users.push_back(newUser);
-    std::ofstream out("storage/users.json");
+    std::ofstream out("../storage/users.json");
     out << users.dump(4);
     out.close();
     return true;

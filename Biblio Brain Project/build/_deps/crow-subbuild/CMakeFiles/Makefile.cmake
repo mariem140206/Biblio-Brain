@@ -7,10 +7,8 @@ set(CMAKE_DEPENDS_GENERATOR "MinGW Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "C:/msys64/ucrt64/share/cmake/Modules/CMakeDetermineSystem.cmake"
   "C:/msys64/ucrt64/share/cmake/Modules/CMakeGenericSystem.cmake"
   "C:/msys64/ucrt64/share/cmake/Modules/CMakeInitializeConfigs.cmake"
-  "C:/msys64/ucrt64/share/cmake/Modules/CMakeSystem.cmake.in"
   "C:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInformation.cmake"
   "C:/msys64/ucrt64/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake"
   "C:/msys64/ucrt64/share/cmake/Modules/ExternalProject.cmake"
@@ -38,7 +36,6 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "CMakeFiles/4.2.0/CMakeSystem.cmake"
   "crow-populate-prefix/tmp/crow-populate-mkdirs.cmake"
   "crow-populate-prefix/tmp/crow-populate-gitclone.cmake"
   "crow-populate-prefix/src/crow-populate-stamp/crow-populate-gitinfo.txt"

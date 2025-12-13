@@ -43,8 +43,9 @@
 
         for(auto &item : all()) {
             if(toLower(item.name).find(lowerQuery) != string::npos || 
-               toLower(item.email).find(lowerQuery) != string::npos ||
-               toLower(item.phoneNumber).find(lowerQuery) != string::npos) {
+               toLower(item.email).find(lowerQuery) != string::npos 
+
+              ){
                 
                 results.push_back(item);
             }
