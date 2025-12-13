@@ -10,6 +10,40 @@ unordered_map<string, Session> AuthService::sessions_by_refresh;
 unordered_map<string, string> AuthService::access_to_refresh_map;
 unordered_map<string, AccountLockState> AuthService::failed_attempts;
 
+
+bool AuthService::registerUser(const User& user, std::string& error)
+{
+    json users = json::array();
+    std::ifstream in("storage/users.json");
+    if (in.is_open()) {
+        in >> users;
+        in.close();
+    }
+    for (auto& u : users) {
+        if (u["email"] == user.email) {
+            error = "Email already exists";
+            return false;
+        }
+    }
+    std::string hashed = PasswordHasher::hash(user.password);
+    int newId = users.empty() ? 1 : users.back()["id"].get<int>() + 1;
+    json newUser = {
+        {"id", newId},
+        {"email", user.email},
+        {"name", user.name},
+        {"password", hashed},
+        {"role", user.role},
+        {"phoneNumber", user.phoneNumber},
+        {"dateOfBirth", user.dateOfBirth}
+    };
+    users.push_back(newUser);
+    std::ofstream out("storage/users.json");
+    out << users.dump(4);
+    out.close();
+    return true;
+}
+
+
 LoginResponse AuthService::login(const string& email, const string& password) {
     if (isAccountLocked(email)) return{"",""} ;
     UserModel model;
