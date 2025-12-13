@@ -59,3 +59,10 @@ endif()
 # Copy resources
 file(COPY public DESTINATION ${CMAKE_BINARY_DIR})
 
+# Copy JSON files from storage
+file(GLOB JSON_FILES "${CMAKE_SOURCE_DIR}/storage/*.json")
+file(COPY ${JSON_FILES} DESTINATION "${CMAKE_BINARY_DIR}/storage")
+
+
+
+

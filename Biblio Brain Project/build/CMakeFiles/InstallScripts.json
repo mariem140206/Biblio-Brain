@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"E:/My Faculty projects/Biblio-Brain c++/Biblio Brain Project/build/cmake_install.cmake",
+		"E:/My Faculty projects/Biblio-Brain c++/Biblio Brain Project/build/_deps/crow-build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

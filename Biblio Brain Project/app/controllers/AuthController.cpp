@@ -36,35 +36,33 @@ crow::response AuthController::login(const crow::request &req)
     return Response::success("Login successful", data);
 }
 
-crow::response AuthController::registerUser(const crow::request &req)
+crow::response AuthController::registerUser(const crow::request& req)
 {
     auto body = crow::json::load(req.body);
-    if (!body)
-    {
+    if (!body) {
         return Response::error("Invalid JSON", 400);
     }
-    if (!body.count("name") || !body.count("email") || !body.count("password"))
-    {
-        return Response::error("Missing required fields: name, email, or password", 400);
+
+    if (!body.count("name") || !body.count("email") || !body.count("password")) {
+        return Response::error(
+            "Missing required fields: name, email, or password", 400
+        );
     }
 
     User user;
-    user.name = body["name"].s();
+    user.name  = body["name"].s();
     user.email = body["email"].s();
-    user.password = PasswordHasher::hash(body["password"].s());
+    user.password = body["password"].s(); 
     user.role = "user";
 
-    UserModel model;
-
-    if (model.findByEmail(user.email).isValid())
-    {
-        return Response::error("Email already exists", 400);
+    std::string error;
+    if (!AuthService::registerUser(user, error)) {
+        return Response::error(error, 400);
     }
-
-    model.create(user);
 
     return Response::success("Registration successful");
 }
+
 
 crow::response AuthController::logout(const crow::request &req)
 {
