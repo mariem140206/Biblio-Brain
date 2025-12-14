@@ -1,3 +1,38 @@
 [
-    
+  {
+    "author": "Yara",
+    "available_copies": 3,
+    "category": "Adventures",
+    "description": "this is about Omnia's adventure",
+    "id": 1,
+    "imagePath": "",
+    "number_of_pages": 50,
+    "title": "Omnia",
+    "total_copies": 5,
+    "year": 2025
+  },
+  {
+    "author": "Toka",
+    "available_copies": 5,
+    "category": "Advantures",
+    "description": "this is about Shrouk's adventure",
+    "id": 2,
+    "imagePath": "",
+    "number_of_pages": 500,
+    "title": "Mariem",
+    "total_copies": 10,
+    "year": 2025
+  },
+  {
+    "author": "Sahar",
+    "available_copies": 5,
+    "category": "Hisory",
+    "description": "this is about Shrouk's life",
+    "id": 3,
+    "imagePath": "",
+    "number_of_pages": 500,
+    "title": "Rawda",
+    "total_copies": 10,
+    "year": 2025
+  }
 ]
