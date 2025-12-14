@@ -11,7 +11,7 @@ unordered_map<string, string> AuthService::access_to_refresh_map;
 unordered_map<string, AccountLockState> AuthService::failed_attempts;
 
 
-bool AuthService::registerUser(const User& user, std::string& error)
+bool AuthService::registerUser(const User& user, const std::string& roleValue, std::string& error)
 {
     json users = json::array();
     std::ifstream in("../storage/users.json");
@@ -32,18 +32,19 @@ bool AuthService::registerUser(const User& user, std::string& error)
         {"email", user.email},
         {"name", user.name},
         {"password", hashed},
-        {"role", user.role},
+        {"role", roleValue},
         {"phoneNumber", user.phoneNumber},
         {"dateOfBirth", user.dateOfBirth}
     };
+
     users.push_back(newUser);
     std::ofstream out("../storage/users.json");
     out << users.dump(4);
     out.close();
     return true;
-}
+    }
 
-
+    
 LoginResponse AuthService::login(const string& email, const string& password) {
     if (isAccountLocked(email)) return{"",""} ;
     UserModel model;

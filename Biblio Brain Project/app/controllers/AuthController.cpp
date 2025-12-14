@@ -5,33 +5,49 @@ using namespace std;
 
 crow::response AuthController::login(const crow::request &req)
 {
-    auto body = crow::json::load(req.body);
-if (
-    !body.count("email") || 
-    !body.count("password") 
-) {
-
-    return Response::error(
-        "Missing required fields", 400
-    );
-}
-
-    string email = body["email"].s();
-    string password = body["password"].s();
-
-
-    LoginResponse response = AuthService::login(email, password);
-
-    if (response.accessToken.empty())
+    try
     {
-        return Response::error("Invalid credentials", 401);
+
+        CROW_LOG_INFO << "LOGIN RAW BODY:";
+        CROW_LOG_INFO << req.body;
+
+        if (req.body.empty())
+        {
+            return Response::error("Empty request body", 400);
+        }
+
+        auto body = crow::json::load(req.body);
+        if (!body)
+        {
+            return Response::error("Invalid JSON format", 400);
+        }
+
+        if (!body.count("email") || !body.count("password"))
+        {
+            return Response::error("Missing required fields", 400);
+        }
+
+        std::string email = body["email"].s();
+        std::string password = body["password"].s();
+
+        LoginResponse response = AuthService::login(email, password);
+
+        if (response.accessToken.empty())
+        {
+            return Response::error("Invalid credentials", 401);
+        }
+
+        crow::json::wvalue data;
+        data["accessToken"] = response.accessToken;
+        data["refreshToken"] = response.refreshToken;
+
+        return Response::success("Login successful", data);
     }
-
-    crow::json::wvalue data;
-    data["accessToken"] = response.accessToken;
-    data["refreshToken"] = response.refreshToken;
-
-    return Response::success("Login successful", data);
+    catch (const std::exception &e)
+    {
+        CROW_LOG_ERROR << "LOGIN EXCEPTION: " << e.what();
+        return Response::error(e.what(), 400);
+    }
 }
 
 crow::response AuthController::registerUser(const crow::request& req)
@@ -51,10 +67,15 @@ crow::response AuthController::registerUser(const crow::request& req)
     user.name  = body["name"].s();
     user.email = body["email"].s();
     user.password = body["password"].s(); 
-    user.role = "user";
 
+    std::string roleValue;
+    if (body.count("role")) {
+    roleValue = body["role"].s(); 
+    } else {
+    return Response::error("Role is required", 400); 
+    }
     std::string error;
-    if (!AuthService::registerUser(user, error)) {
+    if (!AuthService::registerUser(user, roleValue, error)) {
         return Response::error(error, 400);
     }
 

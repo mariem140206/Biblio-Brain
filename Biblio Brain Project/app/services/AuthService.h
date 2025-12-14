@@ -31,7 +31,7 @@ struct LoginResponse{
 
 class AuthService {
 public:
-    static bool registerUser(const User& user, std::string& error);
+    static bool registerUser(const User& user, const std::string& roleValue, std::string& error);
     static LoginResponse login(const string& email, const string& password);
     static User authenticate(const string& token);
     static void logout(const string& accessToken);
