@@ -104,14 +104,18 @@ CROW_ROUTE(app, "/api/books/<int>").methods("PUT"_method)
 CROW_ROUTE(app, "/api/books/<int>").methods("DELETE"_method)
 ([](const crow::request &req, int id) { return BookController::destroy(req, id); });
 
-CROW_ROUTE(app, "/api/books/title/<string>")
-([](const crow::request &req, std::string title) {
-    return BookController::searchByTitle(req, title);
-});
+CROW_ROUTE(app, "/api/books/search")
+([](const crow::request& req) {
+    auto title = req.url_params.get("title");
+    auto category = req.url_params.get("category");
 
-CROW_ROUTE(app, "/api/books/category/<string>")
-([](const crow::request &req, std::string category) {
-    return BookController::searchByCategory(req, category);
+    if (title)
+        return BookController::searchByTitle(req, title);
+
+    if (category)
+        return BookController::searchByCategory(req, category);
+
+    return crow::response(400, "Missing search parameter");
 });
 
 

@@ -1,3 +1,24 @@
 [
-    
-]
+  {
+    "book_id": 1,
+    "borrow_date": "2025-12-15",
+    "due_date": "2025-13-27",
+    "duration": 12,
+    "id": 1,
+    "return_date": "",
+    "returned": false,
+    "status": "pending",
+    "user_id": 6
+  },
+  {
+    "book_id": 4,
+    "borrow_date": "2025-12-15",
+    "due_date": "2025-13-27",
+    "duration": 12,
+    "id": 2,
+    "return_date": "",
+    "returned": false,
+    "status": "pending",
+    "user_id": 6
+  }
+] 

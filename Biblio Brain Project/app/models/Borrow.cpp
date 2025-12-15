@@ -14,8 +14,9 @@ Borrow Borrow::fromJson(const json &j) {
     if(j.contains("due_date")) b.dueDate = j["due_date"].get<string>();
     if(j.contains("return_date")) b.returnDate = j["return_date"].get<string>();
     if(j.contains("status")) b.status = j["status"].get<string>();
-    if(j.contains("status")) b.returned = j["returned"].get<bool>();
-    if(j.contains("status")) b.duration = j["duration"].get<int>();
+    if(j.contains("returned")) b.returned = j["returned"].get<bool>();
+    if(j.contains("duration")) b.duration = j["duration"].get<int>();
+
     return b;
 }
 

@@ -2,6 +2,7 @@
 #include <utility>
 using namespace std;
 
+
 crow::json::wvalue toCrowJson(const Book& b) {
     crow::json::wvalue json;
     json["id"] = b.id;
@@ -13,6 +14,37 @@ crow::json::wvalue toCrowJson(const Book& b) {
     return json;
 }
 
+
+crow::response BookController::searchByTitle(const crow::request& req, const std::string& title) {
+    auto books = JsonStorage::readFile("../storage/books.json"); 
+    json result = json::array();
+
+    for (auto& book : books) {
+        if (book["title"].get<std::string>() == title) {
+            result.push_back(book);
+        }
+    }
+
+    if (result.empty()) return crow::response(404, "Book not found");
+    return crow::response(result.dump());
+}
+
+
+crow::response BookController::searchByCategory(const crow::request& req, const std::string& category) {
+    auto books = JsonStorage::readFile("../storage/books.json"); 
+    json result = json::array();
+
+    for (auto& book : books) {
+        if (book["category"].get<std::string>() == category) {
+            result.push_back(book);
+        }
+    }
+
+    if (result.empty()) return crow::response(404, "No books found in this category");
+    return crow::response(result.dump());
+}
+
+
 User BookController::getAuthenticatedUser(const crow::request& req) {
     string token = req.get_header_value("Authorization");
     if (token.rfind("Bearer ", 0) == 0)
@@ -20,6 +52,7 @@ User BookController::getAuthenticatedUser(const crow::request& req) {
 
     return AuthService::authenticate(token);
 }
+
 
 crow::response BookController::index(const crow::request& req) {
     BookModel model;
@@ -35,6 +68,7 @@ crow::response BookController::index(const crow::request& req) {
     return Response::success("Books retrieved", data);
 }
 
+
 crow::response BookController::show(const crow::request& req, int id) {
     BookModel model;
     Book book = model.findById(id);
@@ -43,6 +77,7 @@ crow::response BookController::show(const crow::request& req, int id) {
 
     return Response::success("Book found", toCrowJson(book));
 }
+
 
 crow::response BookController::search(const crow::request& req) {
     auto query = req.url_params.get("q");
@@ -61,6 +96,7 @@ crow::response BookController::search(const crow::request& req) {
 
     return Response::success("Search completed", data);
 }
+
 
 crow::response BookController::create(const crow::request& req) {
     User user = getAuthenticatedUser(req);
@@ -90,6 +126,7 @@ crow::response BookController::create(const crow::request& req) {
     return Response::success("Book created successfully");
 }
 
+
 crow::response BookController::update(const crow::request& req, int id) {
     User user = getAuthenticatedUser(req);
     if (!user.isValid())
@@ -116,7 +153,7 @@ crow::response BookController::update(const crow::request& req, int id) {
     if (body.has("available_copies")) book.availableCopies = body["available_copies"].i();
     if (body.has("imagePath")) book.imagePath = body["imagePath"].s();
 
-    model.update(id, book.toJson()); // <-- هنا
+    model.update(id, book.toJson());
 
     return Response::success("Book updated successfully");
 }
@@ -134,4 +171,5 @@ crow::response BookController::destroy(const crow::request& req, int id) {
 
     return Response::error("Book not found", 404);
 }
+
 
