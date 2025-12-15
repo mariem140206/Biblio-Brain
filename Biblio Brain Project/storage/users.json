@@ -1,0 +1,47 @@
+[
+    {
+        "dateOfBirth": "",
+        "email": "user@example.com",
+        "id": 2,
+        "name": "Shrouk",
+        "password": "f3e055913a0b1eb0f07317896f9a1bc466b9a50db85a7f882f3ffde9ffb23aca",
+        "phoneNumber": "",
+        "role": "user"
+    },
+    {
+        "dateOfBirth": "",
+        "email": "librarian@example.com",
+        "id": 3,
+        "name": "Toka ",
+        "password": "a1fb4e703a9ef1fa4936801721ff285a97ac85330856674412e054892afe6972",
+        "phoneNumber": "",
+        "role": "librarian"
+    },
+    {
+        "dateOfBirth": "",
+        "email": "admin@example.com",
+        "id": 4,
+        "name": "Omnia",
+        "password": "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5",
+        "phoneNumber": "",
+        "role": "admin"
+    },
+    {
+        "dateOfBirth": "",
+        "email": "admin1@example.com",
+        "id": 5,
+        "name": "Rawda",
+        "password": "ebd22f69f96b03ede2cb7cf4cd24cada632f0941bc2948e3f738555baacbdf31",
+        "phoneNumber": "",
+        "role": "admin"
+    },
+    {
+        "dateOfBirth": "",
+        "email": "user2@example.com",
+        "id": 6,
+        "name": "Mariem",
+        "password": "5626696e19ac4b81318bf2bdc4af05efb210da38a29f0cc395eeda1c37d11ede",
+        "phoneNumber": "",
+        "role": "user"
+    }
+]

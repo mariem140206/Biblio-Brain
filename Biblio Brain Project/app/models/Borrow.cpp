@@ -1,0 +1,123 @@
+#include "Borrow.h"
+
+Borrow::Borrow() 
+    : id(-1), userId(-1), bookId(-1),
+      borrowDate(""), dueDate(""), returnDate(""),
+      status("active"), returned(false), duration(15) {}
+
+Borrow Borrow::fromJson(const json &j) {
+    Borrow b;
+    if(j.contains("id")) b.id = j["id"].get<int>();
+    if(j.contains("user_id")) b.userId = j["user_id"].get<int>();
+    if(j.contains("book_id")) b.bookId = j["book_id"].get<int>();
+    if(j.contains("borrow_date")) b.borrowDate = j["borrow_date"].get<string>();
+    if(j.contains("due_date")) b.dueDate = j["due_date"].get<string>();
+    if(j.contains("return_date")) b.returnDate = j["return_date"].get<string>();
+    if(j.contains("status")) b.status = j["status"].get<string>();
+    if(j.contains("returned")) b.returned = j["returned"].get<bool>();
+    if(j.contains("duration")) b.duration = j["duration"].get<int>();
+
+    return b;
+}
+
+json Borrow::toJson() const {
+    return {
+        {"id", id},
+        {"user_id", userId},
+        {"book_id", bookId},
+        {"borrow_date", borrowDate},
+        {"due_date", dueDate},
+        {"return_date", returnDate},
+        {"status", status},
+        {"returned", returned},
+        {"duration", duration}
+    };
+}
+
+bool Borrow::isValid() const { 
+    return id != -1; 
+}
+
+
+BorrowModel::BorrowModel() 
+    : BaseModel("storage/borrows.json") {}
+
+void BorrowModel::create(const Borrow &borrow) {
+    json data = getAllJson();
+    data.push_back(borrow.toJson());
+    data.back()["id"] = generateId();
+    saveJson(data);
+}
+
+bool BorrowModel::returnBook(int borrowId, string actualReturnDate) {
+    json data = getAllJson();
+    bool found = false;
+
+    for (auto &item : data) {
+        if (item["id"] == borrowId) {
+            item["status"] = "returned";
+            item["return_date"] = actualReturnDate;
+            item["returned"] = true;
+            found = true;
+            break;
+        }
+    }
+
+    if(found) {
+        saveJson(data);
+        return true;
+    }
+    return false;
+}
+
+
+
+vector<Borrow> BorrowModel::findByUserId(int userId) {
+    vector<Borrow> results;
+    for (auto &b : all()) {
+        if (b.userId == userId)
+            results.push_back(b);
+    }
+    return results;
+}
+
+
+vector<Borrow> BorrowModel::findPending() {
+    vector<Borrow> results;
+    for (auto &b : all()) {
+        if (!b.returned) results.push_back(b);
+    }
+    return results;
+}
+
+
+bool BorrowModel::hasActiveBorrow(int userId, int bookId) {
+    for (auto &b : all()) {
+        if (b.userId == userId && b.bookId == bookId && !b.returned)
+            return true;
+    }
+    return false;
+}
+
+
+vector<Borrow> BorrowModel::getBorrowsByUserId(int userId) {
+    vector<Borrow> userHistory;
+    for(auto &b : all()) {
+        if(b.userId == userId) {
+            userHistory.push_back(b);
+        }
+    }
+    return userHistory;
+}
+
+
+
+vector<Borrow> BorrowModel::getActiveBorrows(int userId) {
+    vector<Borrow> activeList;
+    for(auto &b : all()) {
+        if(b.userId == userId && b.status == "active") {
+            activeList.push_back(b);
+        }
+    }
+    return activeList;
+}
