@@ -22,7 +22,7 @@ crow::response BorrowController::requestBorrow(const crow::request& req) {
 
     auto body = crow::json::load(req.body);
     if (!body) return Response::error("Invalid JSON", 400);
-
+     
     int bookId = body["book_id"].i();
     int duration = body.has("duration") ? body["duration"].i() : 14;
 

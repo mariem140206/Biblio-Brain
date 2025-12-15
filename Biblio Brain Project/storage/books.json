@@ -1,3 +1,50 @@
 [
-
+  {
+    "author": "Shrouk",
+    "available_copies": 50,
+    "category": "History",
+    "description": "this is about Egypt",
+    "id": 1,
+    "imagePath": "",
+    "number_of_pages": 500,
+    "title": "Rawda",
+    "total_copies": 80,
+    "year": 2025
+  },
+  {
+    "author": "Yara",
+    "available_copies": 5,
+    "category": "Horror",
+    "description": "this is about Dark House",
+    "id": 2,
+    "imagePath": "",
+    "number_of_pages": 50,
+    "title": "Mariem",
+    "total_copies": 16,
+    "year": 2023
+  },
+  {
+    "author": "Toka",
+    "available_copies": 11,
+    "category": "Advantures",
+    "description": "this is about Advantures",
+    "id": 3,
+    "imagePath": "",
+    "number_of_pages": 100,
+    "title": "Omnia",
+    "total_copies": 20,
+    "year": 2003
+  },
+  {
+    "author": "Ali",
+    "available_copies": 1,
+    "category": "Advantures",
+    "description": "this is about Advantures",
+    "id": 4,
+    "imagePath": "",
+    "number_of_pages": 60,
+    "title": "Ahmed",
+    "total_copies": 10,
+    "year": 2012
+  }
 ]
