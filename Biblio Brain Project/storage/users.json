@@ -43,5 +43,14 @@
         "password": "5626696e19ac4b81318bf2bdc4af05efb210da38a29f0cc395eeda1c37d11ede",
         "phoneNumber": "",
         "role": "user"
+    },
+    {
+        "dateOfBirth": "",
+        "email": "librarian1@example.com",
+        "id": 7,
+        "name": "Mara",
+        "password": "eed5fe88eedf687582e394a4afc70a7b8c6afbf20072c1a1d4a935ef5ef94640",
+        "phoneNumber": "",
+        "role": "librarian"
     }
 ]
