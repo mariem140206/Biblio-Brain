@@ -7,7 +7,7 @@
     "id": 1,
     "return_date": "",
     "returned": false,
-    "status": "pending",
+    "status": "borrowed",
     "user_id": 6
   },
   {
@@ -16,6 +16,17 @@
     "due_date": "2025-13-27",
     "duration": 12,
     "id": 2,
+    "return_date": "",
+    "returned": false,
+    "status": "pending",
+    "user_id": 6
+  },
+  {
+    "book_id": 5,
+    "borrow_date": "2025-12-15",
+    "due_date": "2025-13-24",
+    "duration": 9,
+    "id": 3,
     "return_date": "",
     "returned": false,
     "status": "pending",

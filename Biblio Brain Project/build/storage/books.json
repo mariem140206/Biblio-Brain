@@ -1,7 +1,7 @@
 [
   {
     "author": "Shrouk",
-    "available_copies": 50,
+    "available_copies": 49,
     "category": "History",
     "description": "this is about Egypt",
     "id": 1,
@@ -10,18 +10,6 @@
     "title": "Rawda",
     "total_copies": 80,
     "year": 2025
-  },
-  {
-    "author": "Yara",
-    "available_copies": 5,
-    "category": "Horror",
-    "description": "this is about Dark House",
-    "id": 2,
-    "imagePath": "",
-    "number_of_pages": 50,
-    "title": "Mariem",
-    "total_copies": 16,
-    "year": 2023
   },
   {
     "author": "Toka",
@@ -46,5 +34,17 @@
     "title": "Ahmed",
     "total_copies": 10,
     "year": 2012
+  },
+  {
+    "author": "Mohammed",
+    "available_copies": 2,
+    "category": "Science",
+    "description": "this is about university",
+    "id": 5,
+    "imagePath": "",
+    "number_of_pages": 180,
+    "title": "Marwan",
+    "total_copies": 9,
+    "year": 2022
   }
 ]
